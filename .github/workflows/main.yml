@@ -9,7 +9,7 @@ jobs:
   capture_screenshots:
     strategy:
       matrix:
-        runs-on: [macos-latest, macos-latest, macos-latest, macos-latest, macos-latest]
+        runs-on: [macos-latest, macos-latest, macos-latest, macos-latest, macos-latest, macos-latest, macos-latest, macos-latest, macos-latest, macos-latest,macos-latest, macos-latest, macos-latest, macos-latest, macos-latest,macos-latest, macos-latest, macos-latest, macos-latest, macos-latest ]
     runs-on: ${{ matrix.runs-on }}
     continue-on-error: true
     timeout-minutes: 20
