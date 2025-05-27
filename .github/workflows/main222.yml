@@ -1,0 +1,57 @@
+name: Streamtape windows
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/40 * * * *'
+
+jobs:
+  capture_screenshots:
+    strategy:
+      matrix:
+        runs-on: [windows-2019]  # Sử dụng 1 giá trị duy nhất
+        include:
+          - id: 1
+          - id: 2
+          - id: 3
+          - id: 4
+          - id: 5
+          - id: 6
+          - id: 7
+          - id: 8
+          - id: 9
+          - id: 10
+          - id: 11
+          - id: 12
+          - id: 13
+          - id: 14
+          - id: 15
+          - id: 16
+          - id: 17
+          - id: 18
+          - id: 19
+          - id: 20
+    runs-on: ${{ matrix.runs-on }}
+    continue-on-error: true
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+           python-version: '3.10'
+        
+      - name: Install dependencies
+        run: pip install undetected-chromedriver selenium chromedriver_autoinstaller pyautogui fake-useragent
+
+      - name: Run Selenium script
+        run: python videzz_video3.py
+        
+      - name: Archive screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: '**/*.png'
