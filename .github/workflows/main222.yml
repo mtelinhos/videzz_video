@@ -47,7 +47,7 @@ jobs:
         run: pip install undetected-chromedriver selenium chromedriver_autoinstaller pyautogui fake-useragent
 
       - name: Run Selenium script
-        run: python videzz_video3.py
+        run: python videzz_video.py
         
       - name: Archive screenshots
         uses: actions/upload-artifact@v4
