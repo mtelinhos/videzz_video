@@ -1,0 +1,38 @@
+name: Streamtape macOS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/40 * * * *'
+
+jobs:
+  capture_screenshots:
+    strategy:
+      matrix:
+        runs-on: [macos-latest, macos-latest, macos-latest, macos-latest, macos-latest]
+    runs-on: ${{ matrix.runs-on }}
+    continue-on-error: true
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install undetected-chromedriver selenium chromedriver-autoinstaller fake-useragent
+
+      - name: Run Selenium script
+        run: python videzz_video.py
+
+      - name: Archive screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: '**/*.png'
