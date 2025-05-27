@@ -49,7 +49,7 @@ def random_mouse_move(driver):
         time.sleep(1)
 
 # Lấy danh sách link từ GitHub
-url = "https://raw.githubusercontent.com/anisidina29/videzz_video/refs/heads/main/link.txt"
+url = "https://raw.githubusercontent.com/talblubClouby96/videzz_video/refs/heads/main/links.txt"
 response = requests.get(url)
 response.raise_for_status()
 link_list = response.text.strip().splitlines()
@@ -60,7 +60,6 @@ selected_links += selected_links
 
 print(selected_links)
 
-# Hàm chính chạy Selenium
 def run_main_selenium():
     for link in selected_links:
         for i in ["1", "2", "2"]:
@@ -97,4 +96,40 @@ def run_main_selenium():
                     print(f"Error: {e}")
                     try:
                         driver.execute_script("""
-                            var element = document.getElement
+                            var element = document.getElementById('vplayer');
+                            var clickEvent = new MouseEvent('click', {
+                                bubbles: true,
+                                cancelable: true,
+                                view: window
+                            });
+                            element.dispatchEvent(clickEvent);
+                        """)
+                        try:
+                            element = driver.find_element(By.XPATH, play_button_xpath)
+                            actions = ActionChains(driver)
+                            actions.move_to_element_with_offset(element, 5, 5).click().perform()
+                            time.sleep(30)
+                            driver.save_screenshot(f"screenshot_error_{i}.png")
+                        except Exception as e:
+                            print(f"PyAutoGUI click failed: {e}")
+                    except Exception as click_error:
+                        print(f"Không thể click tọa độ: {click_error}")
+            time.sleep(150)
+            driver.save_screenshot("screenshot_final.png")
+
+            # Tải video
+            download_button_xpath = "//a[@class='btn btn-success btn-lg btn-download btn-download-n']"
+            for i in range(5):
+                try:
+                    download_button = driver.find_element(By.XPATH, download_button_xpath)
+                    download_button.click()
+                    time.sleep(random.uniform(1, 3))
+                    random_mouse_move(driver)
+                    driver.save_screenshot(f"screenshot_download_{i}.png")
+                except Exception as e:
+                    print(f"Download Error: {e}")
+
+            driver.quit()
+
+# Chạy chương trình
+run_main_selenium()
